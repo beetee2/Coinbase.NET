@@ -3,3 +3,10 @@ c:\code\CryptoCurrencies\CoinbaseConnector\CoinbaseConnector\bin\Debug\CoinbaseC
 c:\code\CryptoCurrencies\CoinbaseConnector\CoinbaseConnector\bin\Debug\CoinbaseConnector.pdb
 c:\code\CryptoCurrencies\CoinbaseConnector\CoinbaseConnector\obj\Debug\CoinbaseConnector.dll
 c:\code\CryptoCurrencies\CoinbaseConnector\CoinbaseConnector\obj\Debug\CoinbaseConnector.pdb
+G:\Development\crypto\Coinbase.NET\CoinbaseConnector\bin\Debug\CoinbaseConnector.dll
+G:\Development\crypto\Coinbase.NET\CoinbaseConnector\bin\Debug\CoinbaseConnector.pdb
+G:\Development\crypto\Coinbase.NET\CoinbaseConnector\obj\Debug\CoinbaseConnector.csprojResolveAssemblyReference.cache
+G:\Development\crypto\Coinbase.NET\CoinbaseConnector\obj\Debug\CoinbaseConnector.dll
+G:\Development\crypto\Coinbase.NET\CoinbaseConnector\obj\Debug\CoinbaseConnector.pdb
+G:\Development\crypto\Coinbase.NET\CoinbaseConnector\bin\Debug\Common.dll
+G:\Development\crypto\Coinbase.NET\CoinbaseConnector\bin\Debug\Common.pdb

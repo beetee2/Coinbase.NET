@@ -1,16 +1,7 @@
-﻿using System.Globalization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System;
 using System.Text;
-using System.Threading.Tasks;
-using System.Security.Cryptography;
-using System.IO;
-using System.Xml;
-using System.Configuration;
-using System.Runtime.Serialization.Json;
-using System.Web.Script.Serialization;
+using CoinbaseConnector.Interfaces;
+using Common;
 
 namespace CoinbaseConnector
 {
@@ -21,11 +12,8 @@ namespace CoinbaseConnector
 	// to my GitHub repo: http://www.github.com/chrisgwilliams/coinbase.NET or message 
 	// me via Twitter: @chrisgwilliams 
 	
-	public class Connector
+	public class Connector : IConnector
     {
-		private string API_KEY = APIKeys.API_KEY;
-		private string API_SECRET = APIKeys.API_SECRET;
-
 		private string URL_BASE = "https://coinbase.com/api/v1/";
 		private const String GET = "GET";
 		private const String POST = "POST";
@@ -36,52 +24,52 @@ namespace CoinbaseConnector
 		public string GetAccountChanges(int page = 1)
 		{
 			// Page field is optional. Default is 1
-			return JsonRequest(URL_BASE + "account_changes?page=" + page, GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "account_changes?page=" + page, GET);
 		}
 
 		// Account
 		public string GetAccountBalance()
 		{
-			return JsonRequest(URL_BASE + "account/balance", GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "account/balance", GET);
 		}
 		public string GetCurrentReceiveAddress()
 		{
-			return JsonRequest(URL_BASE + "account/receive_address", GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "account/receive_address", GET);
 		}
 		public string GenerateReceiveAddress()
 		{
-			return JsonRequest(URL_BASE + "account/generate_receive_address", POST);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "account/generate_receive_address", POST);
 		}
 		public string GenerateReceiveAddress(String callbackURL, String label)
 		{
-			return JsonRequest(URL_BASE + "account/generate_receive_address?address[callback_url]=" + callbackURL+"&address[label]=" + label, POST); 
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "account/generate_receive_address?address[callback_url]=" + callbackURL + "&address[label]=" + label, POST); 
 		}
 
 		// Addresses
 		public string GetAddressList(int page = 1, int limit = 25, String query = "")
 		{
 			// Page field is optional. Default is 1
-			return JsonRequest(URL_BASE + "addresses?page=" + page + "&limit=" + limit + "&query=" + query, GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "addresses?page=" + page + "&limit=" + limit + "&query=" + query, GET);
 		}
 
 		// OAuth Applications
 		public string GetOAuthApplicationsList(int page = 1)
 		{
-			return JsonRequest(URL_BASE + "oauth/applications?page=" + page, GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "oauth/applications?page=" + page, GET);
 		}
 		public string GetOauthApplicationByID(String ID)
 		{
-			return JsonRequest(URL_BASE + "oauth/applications/" + ID, GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "oauth/applications/" + ID, GET);
 		}
 		public string CreateOAuthApplication(String name, String redirectURI)
 		{
-			return JsonRequest(URL_BASE + "oauth/applications?application[name]=" + name + "&application[redirect_uri]=" + redirectURI, POST);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "oauth/applications?application[name]=" + name + "&application[redirect_uri]=" + redirectURI, POST);
 		}
 
 		// Authorization
 		public string GetApplicationAccountAccessInfo()
 		{
-			return JsonRequest(URL_BASE + "authorization", GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "authorization", GET);
 		}
 
 		// Buttons
@@ -162,11 +150,11 @@ namespace CoinbaseConnector
 			// Required if type = subscription. Default value is never.
 			sb.Append("&button[repeat]=" + repeat);
 
-			return JsonRequest(URL_BASE + "buttons" + sb.ToString(), POST);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "buttons" + sb.ToString(), POST);
 		}
 		public string CreateOrderForButton(String code)
 		{
-			return JsonRequest(URL_BASE + "buttons/" + code + "/create_order", POST);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "buttons/" + code + "/create_order", POST);
 		}
 
 		// Buys
@@ -174,7 +162,7 @@ namespace CoinbaseConnector
 		// to buy if they have to wait for their money to arrive to lock in a price. Default value is FALSE
 		public string PurchaseBitcoin(float qty, Boolean agree_btc_amount_varies = false, String payment_method_id = "")
 		{
-			return JsonRequest(URL_BASE + "buys?qty=" + qty + "&agree_btc_amount_varies=" + agree_btc_amount_varies 
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "buys?qty=" + qty + "&agree_btc_amount_varies=" + agree_btc_amount_varies 
 				+ "&payment_method_id=" + payment_method_id, POST);
 		}
 
@@ -182,24 +170,24 @@ namespace CoinbaseConnector
 		public string GetEmailContactsList(int page = 1, int limit = 25, String query = "")
 		{
 			if (limit > 1000) limit = 1000;
-			return JsonRequest(URL_BASE + "contacts?page=" + page + "&limit=" + limit + "&query=" + query, GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "contacts?page=" + page + "&limit=" + limit + "&query=" + query, GET);
 		}
 
 		// Currencies
 		public string GetSupportedCurrenciesList()
 		{
-			return JsonRequest(URL_BASE + "currencies", GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "currencies", GET);
 		}
 		public string GetBTCExchangeRate()
 		{
-			return JsonRequest(URL_BASE + "exchange_rates", GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "exchange_rates", GET);
 		}
 
 		// Orders
 		public string GetReceivedMerchantOrdersList(int page = 1)
 		{
 			// Page field is optional. Default is 1
-			return JsonRequest(URL_BASE + "orders?page=" + page, GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "orders?page=" + page, GET);
 		}
 		// Use this endpoint to create a one-time unique order that does not use the Coinbase merchant tools.
 		// Ex: Generating a bitcoin address for an order and displaying it directly in your page, to only one user.
@@ -280,18 +268,18 @@ namespace CoinbaseConnector
 			// Required if type = subscription. Default value is never.
 			sb.Append("&button[repeat]=" + repeat);
 
-			return JsonRequest(URL_BASE + "orders" + sb.ToString(), POST);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "orders" + sb.ToString(), POST);
 		}
 		// ID can represent an actual Order ID or a custom merchant field.
 		public string GetMerchantOrderByID(string ID = "")
 		{
-			return JsonRequest(URL_BASE + "orders/" + ID, GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "orders/" + ID, GET);
 		}
 
 		// Payment Methods
 		public string GetAssociatedPaymentMethods()
 		{
-			return JsonRequest(URL_BASE + "payment_methods", GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "payment_methods", GET);
 		}
 
 		// Prices 
@@ -299,23 +287,23 @@ namespace CoinbaseConnector
 		{
 			// qty is optional. Default value is 1
 			// currency is optional. Default value is USD (this is the only supported value at this time.)
-			return JsonRequest(URL_BASE + "prices/buy?qty=" + qty + "&currency=" + currency, GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "prices/buy?qty=" + qty + "&currency=" + currency, GET);
 		}
 		public string GetTotalSellPriceForBitcoin(float qty = 1, String currency = "USD")
 		{
 			// qty is optional. Default value is 1.
 			// currency is optional. Default value is USD (this is the only supported value at this time.)
-			return JsonRequest(URL_BASE + "prices/sell?qty=" + qty + "&currency=" + currency, GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "prices/sell?qty=" + qty + "&currency=" + currency, GET);
 		}
 		public string GetSpotPriceForBitcoin(String currency = "USD")
 		{
 			// Currency must be an ISO 4217 Currency Code. Default is USD
-			return JsonRequest(URL_BASE + "prices/spot_rate?currency=" + currency, GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "prices/spot_rate?currency=" + currency, GET);
 		}
 		public string GetHistoricalSpotPriceForBitcoin(int page = 1)
 		{
 			// Page field is optional. Default is 1
-			return JsonRequest(URL_BASE + "prices/historical?page=" + page, GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "prices/historical?page=" + page, GET);
 		}
 
 		// Recurring Payments
@@ -323,9 +311,9 @@ namespace CoinbaseConnector
 		{
 			// ID field is optional. Default is no parameter. 
 			// If you specify an ID, you get an individual recurring payment, otherwise you get a list
-			if (ID != "") return JsonRequest(URL_BASE + "recurring_payments/" + ID, GET);
+            if (ID != "") return JsonRequestBuilder.JsonRequest(URL_BASE + "recurring_payments/" + ID, GET);
 
-			return JsonRequest(URL_BASE + "recurring_payments?page=" + page + "&limit=" + limit, GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "recurring_payments?page=" + page + "&limit=" + limit, GET);
 		}
 
 		// Sells
@@ -333,7 +321,7 @@ namespace CoinbaseConnector
 		{
 			// Quantity of Bitcoin to sell is required.
 			// Payment Method ID is optional. Will use default account ID. Must have verified bank account to work.
-			return JsonRequest(URL_BASE + "sells?qty=" + qty + "&payment_method_id=" + payment_method_id, POST);	
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "sells?qty=" + qty + "&payment_method_id=" + payment_method_id, POST);	
 		}
 
 		// Subscribers
@@ -341,9 +329,9 @@ namespace CoinbaseConnector
 		{
 			// ID field is optional. Default is no parameter. 
 			// If you specify an ID, you get an individual customer subscription, otherwise you get a list
-			if (ID != "") return JsonRequest(URL_BASE + "subscribers/" + ID, GET);
+            if (ID != "") return JsonRequestBuilder.JsonRequest(URL_BASE + "subscribers/" + ID, GET);
 
-			return JsonRequest(URL_BASE + "subscribers?page=" + page + "&limit=" + limit, GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "subscribers?page=" + page + "&limit=" + limit, GET);
 		}
 		
 		// Tokens
@@ -351,12 +339,12 @@ namespace CoinbaseConnector
 		{
 			// This call creates a token redeemable for Bitcoin. Returned Bitcoin address can be used to send money 
 			// to the token, and will be credited to the account of the token redeemer if money is sent.
-			return JsonRequest(URL_BASE + "tokens", POST);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "tokens", POST);
 		}
 		public string RedeemToken(String tokenID = "")
 		{
 			// This call claims a redeemable token for its address and bitcoin(s).
-			return JsonRequest(URL_BASE + "tokens/redeem?token_id=" + tokenID, POST);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "tokens/redeem?token_id=" + tokenID, POST);
 		}
 
 		// Transactions
@@ -364,9 +352,9 @@ namespace CoinbaseConnector
 		{
 			// ID field is optional. Default is no parameter. 
 			// If you specify an ID, you get an individual transaction, otherwise you get a list
-			if (ID != "") return JsonRequest(URL_BASE + "transactions/" + ID, GET);
+            if (ID != "") return JsonRequestBuilder.JsonRequest(URL_BASE + "transactions/" + ID, GET);
 
-			return JsonRequest(URL_BASE + "transactions?page=" + page + "&limit=" + limit, GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "transactions?page=" + page + "&limit=" + limit, GET);
 		}
 		public string SendMoney(String email, String amount = "", String amountString = "", String amountCurrencyISO = "", 
 								String notes = "", String userFee = "", String referrerID = "", String idem = "", 
@@ -408,7 +396,7 @@ namespace CoinbaseConnector
 			if (idem != "") sb.Append("&transaction[idem]=" + idem);
 			if (instantBuy != false) sb.Append("&transaction[instant_buy]=" + instantBuy.ToString());
 
-			return JsonRequest(URL_BASE + "transactions/send_money" + sb.ToString(), POST);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "transactions/send_money" + sb.ToString(), POST);
 		}
 		public string SendInvoice(String from, String amount = "", String amountString = "", String amountCurrencyISO = "",
 								  String notes = "")
@@ -436,23 +424,23 @@ namespace CoinbaseConnector
 			// OPTIONAL PARAMS
 			if (notes != "") sb.Append("&transaction[notes]=" + notes);
 
-			return JsonRequest(URL_BASE + "transactions/request_money" + sb.ToString(), POST);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "transactions/request_money" + sb.ToString(), POST);
 		}
 		public string ResendInvoice(String ID)
 		{
 			// This lets the user resend a money request.
-			return JsonRequest(URL_BASE + "transactions/" + ID + "/resend_request", PUT);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "transactions/" + ID + "/resend_request", PUT);
 		}
 		public string CancelMoneyRequest(String ID)
 		{
 			// This lets a user cancel a money request. Money requests can be canceled by the sender or the recipient.
-			return JsonRequest(URL_BASE + "transactions/" + ID + "/cancel_request", DELETE);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "transactions/" + ID + "/cancel_request", DELETE);
 		}
 		public string CompleteMoneyRequest(String ID)
 		{
 			// This lets a user complete a money request. Money requests can only be completed by the sender (not the 
 			// recipient.) The sender in this context is the user who is sending money (not sending the invoice.)
-			return JsonRequest(URL_BASE + "transactions/" + ID + "/complete_request", PUT);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "transactions/" + ID + "/complete_request", PUT);
 		}
 
 		// Transfers
@@ -462,7 +450,7 @@ namespace CoinbaseConnector
 			// page param is optional, default value is 1.
 			// limit param is optional, default value is 25, max value is 1000.
 			if (limit > 1000) limit = 1000;
-			return JsonRequest(URL_BASE + "transfers?page=" + page + "&limit=" + limit, GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "transfers?page=" + page + "&limit=" + limit, GET);
 		}
 		
 		// Users
@@ -486,13 +474,13 @@ namespace CoinbaseConnector
 			if (referrerID != "") sb.Append("&user[referrer_id]=" + referrerID);
 			if (clientID != "") sb.Append("&user[client_id]=" + clientID);
 
-			return JsonRequest(URL_BASE + "users" + sb.ToString(), POST);
+			return JsonRequestBuilder.JsonRequest(URL_BASE + "users" + sb.ToString(), POST);
 
 		}
 		public string GetAccountSettings()
 		{
 			// Show current user with account settings.
-			return JsonRequest(URL_BASE + "users", GET);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "users", GET);
 		}
 		public string UpdateAccountSettings(String id, String name = "", String email = "", String pin = "", 
 											String nativeCurrency = "", String timeZone = "")
@@ -507,62 +495,7 @@ namespace CoinbaseConnector
 			if (nativeCurrency != "") sb.Append("&user[native_currency]=" + nativeCurrency);
 			if (timeZone != "") sb.Append("&user[time_zone]=" + timeZone);
 
-			return JsonRequest(URL_BASE + "users/" + id + sb.ToString(), PUT);
-		}
-
-
-
-		private string JsonRequest(string url, string method)
-		{
-			string returnData = String.Empty;
-
-			var webRequest = HttpWebRequest.Create(url) as HttpWebRequest;
-			if (webRequest != null)
-			{
-				webRequest.Accept = "*/*";
-				webRequest.UserAgent = ".NET";
-				webRequest.Method = method;
-				webRequest.ContentType = "application/json";
-				webRequest.Host = "coinbase.com";
-
-				string nonce = Convert.ToInt64(DateTime.Now.Ticks).ToString();
-				string message = nonce + url;
-				string signature = HashEncode(HashHMAC(StringEncode(API_SECRET), StringEncode(message)));
-
-				var whc = new WebHeaderCollection();
-				whc.Add("ACCESS_KEY: " + API_KEY);
-				whc.Add("ACCESS_SIGNATURE: " + signature);
-				whc.Add("ACCESS_NONCE: " + nonce);
-				webRequest.Headers = whc;
-
-				using (WebResponse response = webRequest.GetResponse())
-				{
-					using (Stream stream = response.GetResponseStream())
-					{
-						StreamReader reader = new StreamReader(stream);
-						returnData = reader.ReadToEnd();
-					}
-				}
-			}
-
-			return returnData;
-		}
-
-		private static byte[] StringEncode(string text)
-		{
-			var encoding = new ASCIIEncoding();
-			return encoding.GetBytes(text);
-		}
-
-		private static string HashEncode(byte[] hash)
-		{
-			return BitConverter.ToString(hash).Replace("-", "").ToLower();
-		}
-
-		private static byte[] HashHMAC(byte[] key, byte[] message)
-		{
-			var hash = new HMACSHA256(key);
-			return hash.ComputeHash(message);
+            return JsonRequestBuilder.JsonRequest(URL_BASE + "users/" + id + sb.ToString(), PUT);
 		}
     }
 }

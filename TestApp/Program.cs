@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using CoinbaseConnector;
 
 namespace TestApp
@@ -12,7 +7,7 @@ namespace TestApp
 	{
 		static void Main(string[] args)
 		{
-			var cbc = new CoinbaseConnector.Connector();
+			var cbc = new Connector();
 
 			Console.WriteLine("Balance: ");
 			Console.WriteLine(cbc.GetAccountBalance());
@@ -38,7 +33,6 @@ namespace TestApp
 			Console.WriteLine("Application Account Access Info: ");
 			Console.WriteLine(cbc.GetApplicationAccountAccessInfo());
 			Console.WriteLine("");
-
 			Console.ReadLine();
 		}
 	}

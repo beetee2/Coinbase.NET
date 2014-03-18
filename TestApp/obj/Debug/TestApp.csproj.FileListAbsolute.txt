@@ -9,3 +9,13 @@ c:\code\CryptoCurrencies\CoinbaseConnector\TestApp\obj\Debug\TestApp.pdb
 C:\CODE\CryptoCurrencies\Coinbase.NET\TestApp\bin\Debug\TestApp.exe.config
 C:\CODE\CryptoCurrencies\Coinbase.NET\TestApp\obj\Debug\TestApp.exe
 C:\CODE\CryptoCurrencies\Coinbase.NET\TestApp\obj\Debug\TestApp.pdb
+G:\Development\crypto\Coinbase.NET\TestApp\bin\Debug\TestApp.exe.config
+G:\Development\crypto\Coinbase.NET\TestApp\bin\Debug\TestApp.exe
+G:\Development\crypto\Coinbase.NET\TestApp\bin\Debug\TestApp.pdb
+G:\Development\crypto\Coinbase.NET\TestApp\bin\Debug\CoinbaseConnector.dll
+G:\Development\crypto\Coinbase.NET\TestApp\bin\Debug\CoinbaseConnector.pdb
+G:\Development\crypto\Coinbase.NET\TestApp\obj\Debug\TestApp.csprojResolveAssemblyReference.cache
+G:\Development\crypto\Coinbase.NET\TestApp\obj\Debug\TestApp.exe
+G:\Development\crypto\Coinbase.NET\TestApp\obj\Debug\TestApp.pdb
+G:\Development\crypto\Coinbase.NET\TestApp\bin\Debug\Common.dll
+G:\Development\crypto\Coinbase.NET\TestApp\bin\Debug\Common.pdb
